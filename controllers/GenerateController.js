@@ -15,20 +15,21 @@ const openai = new OpenAI.OpenAIApi(configuration);
 const GenetareController = {
     connectOpenAI: (req, res) => {
         let model = "text-davinci-003";
-        let { prompt } = req.body;
-        let maxToken = 1500;
-        let temperature = 0.6;
-        let topP = 0.9;
+        console.log(req.body);
+        let { prompt, maxToken, temperature, topP, stop } = req.body;
+        // let maxToken = 1500;
+        // let temperature = 0.6;
+        // let topP = 0.9;
         let stream = true;
-        let stop = "";
+        // let stop = "";
         let resData = "";
         const completion = openai.createCompletion(
             {
                 model: model,
                 prompt: prompt,
-                max_tokens: maxToken,
-                temperature: temperature,
-                top_p: topP,
+                max_tokens: parseInt(maxToken),
+                temperature: parseInt(temperature),
+                top_p: parseInt(topP),
                 stop: stop,
                 stream: stream,
             },
