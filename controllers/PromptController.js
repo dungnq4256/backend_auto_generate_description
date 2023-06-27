@@ -3,10 +3,10 @@ const connectDB = require("../utils/connectDB");
 
 const db = connectDB.createConnection();
 
-const StatisticalController = {
-    getStatistical: async (req, res) => {
+const PromptController = {
+    getAllPrompt: async (req, res) => {
         try {
-            const sql = "SELECT * FROM statistics";
+            const sql = "SELECT * FROM prompts";
             await db.query(sql, (error, results) => {
                 if (error) {
                     console.log(error);
@@ -22,7 +22,7 @@ const StatisticalController = {
                 } else {
                     return res.json({
                         result: "success",
-                        message: "Get all statistics success!",
+                        message: "Get all prompts success!",
                         data: results,
                     });
                 }
@@ -37,4 +37,4 @@ const StatisticalController = {
     },
 };
 
-module.exports = StatisticalController;
+module.exports = PromptController;

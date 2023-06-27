@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const GenerateRouter = require("./routers/GenerateRouter");
 const StatisticalRouter = require("./routers/StatisticalRouter");
+const PromptRouter = require("./routers/PromptRouter");
 const app = express();
 
 const corsOpts = {
@@ -39,6 +40,9 @@ app.get("/", (req, res) => {
 
 // routing
 app.use(GenerateRouter, function (req, res, next) {
+    next();
+});
+app.use(PromptRouter, function (req, res, next) {
     next();
 });
 app.use(StatisticalRouter, function (req, res, next) {

@@ -1,8 +1,8 @@
 const express = require('express')
-const GenerateController = require('../controllers/GenerateController')
+const StatisticalController = require('../controllers/StatisticalController')
 const router = express.Router()
 
-//connect OpenAI
-router.post('/generate', GenerateController.connectOpenAI);
+//get statistic
+router.get('/statistics', StatisticalController.getStatistical);
 
 module.exports = router
