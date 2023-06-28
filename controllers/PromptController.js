@@ -6,7 +6,10 @@ const db = connectDB.createConnection();
 const PromptController = {
     getAllPrompt: async (req, res) => {
         try {
-            const sql = "SELECT * FROM prompts";
+            const { name } = req.query;
+            const sql =
+                "SELECT * FROM prompts WHERE name LIKE " +
+                mysql.escape("%" + name + "%");
             await db.query(sql, (error, results) => {
                 if (error) {
                     console.log(error);
@@ -35,6 +38,7 @@ const PromptController = {
             });
         }
     },
+    
 };
 
 module.exports = PromptController;
