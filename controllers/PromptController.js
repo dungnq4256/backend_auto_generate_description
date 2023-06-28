@@ -10,7 +10,7 @@ const PromptController = {
             await db.query(sql, (error, results) => {
                 if (error) {
                     console.log(error);
-                    return res.json({
+                    return res.status(500).json({
                         error: "Unknown error",
                     });
                 }
