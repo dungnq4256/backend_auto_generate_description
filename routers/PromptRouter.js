@@ -4,6 +4,6 @@ const router = express.Router()
 
 //get prompt
 router.get('/prompts', PromptController.getAllPrompt);
-router.get('/base_prompts', PromptController.getBasePrompt);
+router.get('/base-prompts', PromptController.getBasePrompt);
 
 module.exports = router
