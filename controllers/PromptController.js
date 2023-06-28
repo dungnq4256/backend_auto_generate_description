@@ -6,8 +6,7 @@ const db = connectDB.createConnection();
 const PromptController = {
     getBasePrompt: async (req, res) => {
         try {
-            const sql =
-                "SELECT * FROM base_prompts ";
+            const sql = "SELECT * FROM base_prompts ";
             await db.query(sql, (error, results) => {
                 if (error) {
                     console.log(error);
@@ -70,7 +69,90 @@ const PromptController = {
             });
         }
     },
-    
+
+    createPrompt: async (req, res) => {
+        try {
+            const { name, value } = req.body;
+            const sql =
+                "INSERT INTO prompts (name, value) VALUES (" +
+                mysql.escape(name) +
+                ", " +
+                mysql.escape(value) +
+                ")";
+            await db.query(sql, (error, results) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                        error: "Unknown error",
+                    });
+                }
+                if (results.length === 0) {
+                    return res.json({
+                        result: "success",
+                        message: "Empty!",
+                    });
+                } else {
+                    return res.json({
+                        result: "success",
+                        message: "Create prompt success!",
+                        data: {
+                            id: results.insertId,
+                            name: name,
+                            value: value,
+                        },
+                    });
+                }
+            });
+        } catch (error) {
+            res.status(500).json({
+                result: "failed",
+                message: "Server error",
+                error: err,
+            });
+        }
+    },
+
+    editPrompt: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { name, value } = req.body;
+            console.log(id, name, value);
+            const sql =
+                "UPDATE prompts SET name = " +
+                mysql.escape(name) +
+                ", value = " +
+                mysql.escape(value) +
+                " WHERE (id = " +
+                mysql.escape(id) +
+                ")";
+            await db.query(sql, (error, results) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                        error: "Unknown error",
+                    });
+                }
+                if (results.length === 0) {
+                    return res.json({
+                        result: "success",
+                        message: "Empty!",
+                    });
+                } else {
+                    return res.json({
+                        result: "success",
+                        message: "Update prompt success!",
+                        data: results,
+                    });
+                }
+            });
+        } catch (error) {
+            res.status(500).json({
+                result: "failed",
+                message: "Server error",
+                error: err,
+            });
+        }
+    },
 };
 
 module.exports = PromptController;
