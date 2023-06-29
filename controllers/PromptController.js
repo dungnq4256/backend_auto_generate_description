@@ -74,27 +74,45 @@ const PromptController = {
     },
     getAllPrompt: async (req, res) => {
         try {
-            const { name } = req.query;
+            const { name, page, size } = req.query;
+            let count = 0;
             const sql =
                 "SELECT * FROM prompts WHERE name LIKE " +
+                mysql.escape("%" + name + "%") +
+                "LIMIT " +
+                mysql.escape(size * 1) +
+                " OFFSET " +
+                mysql.escape(page * size);
+            const sql_count =
+                "SELECT COUNT(*) FROM prompts WHERE name LIKE " +
                 mysql.escape("%" + name + "%");
+            await db.query(sql_count, (error, results) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                        error: "Unknown error",
+                    });
+                } else {
+                    console.log(results);
+                    count = results[0]["COUNT(*)"];
+                }
+            });
             await db.query(sql, (error, results) => {
                 if (error) {
                     console.log(error);
                     return res.status(500).json({
                         error: "Unknown error",
                     });
-                }
-                if (results.length === 0) {
-                    return res.json({
-                        result: "success",
-                        message: "Empty!",
-                    });
                 } else {
                     return res.json({
                         result: "success",
                         message: "Get all prompts success!",
-                        data: results,
+                        data: {
+                            promptList: results,
+                            size: parseInt(size),
+                            page: parseInt(page),
+                            totalPages: Math.ceil(count / size),
+                        },
                     });
                 }
             });
