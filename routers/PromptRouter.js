@@ -7,5 +7,6 @@ router.get("/prompts", PromptController.getAllPrompt);
 router.get("/base-prompts", PromptController.getBasePrompt);
 router.post("/prompts", PromptController.createPrompt);
 router.put("/prompts/:id", PromptController.editPrompt);
+router.delete("/prompts/:id", PromptController.deletePrompt);
 
 module.exports = router;

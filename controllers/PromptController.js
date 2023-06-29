@@ -153,6 +153,34 @@ const PromptController = {
             });
         }
     },
+
+    deletePrompt: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const sql =
+                "DELETE FROM prompts WHERE (id = " + mysql.escape(id) + ")";
+            await db.query(sql, (error, results) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                        error: "Unknown error",
+                    });
+                } else {
+                    return res.json({
+                        result: "success",
+                        message: "Delete prompt success!",
+                        data: results,
+                    });
+                }
+            });
+        } catch (error) {
+            res.status(500).json({
+                result: "failed",
+                message: "Server error",
+                error: err,
+            });
+        }
+    },
 };
 
 module.exports = PromptController;
