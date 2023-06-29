@@ -6,7 +6,7 @@ const db = connectDB.createConnection();
 const PromptController = {
     getBasePrompt: async (req, res) => {
         try {
-            const sql = "SELECT * FROM base_prompts ";
+            const sql = "SELECT * FROM base_prompts";
             await db.query(sql, (error, results) => {
                 if (error) {
                     console.log(error);
@@ -23,6 +23,43 @@ const PromptController = {
                     return res.json({
                         result: "success",
                         message: "Get all prompts success!",
+                        data: results,
+                    });
+                }
+            });
+        } catch (error) {
+            res.status(500).json({
+                result: "failed",
+                message: "Server error",
+                error: err,
+            });
+        }
+    },
+    editBasePrompt: async (req, res) => {
+        try {
+            const { promptDesc, promptSEO } = req.body;
+            const sql =
+                "UPDATE base_prompts SET promptDesc = " +
+                mysql.escape(promptDesc) +
+                ", promptSEO = " +
+                mysql.escape(promptSEO) +
+                " WHERE (id = 1)";
+            await db.query(sql, (error, results) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                        error: "Unknown error",
+                    });
+                }
+                if (results.length === 0) {
+                    return res.json({
+                        result: "success",
+                        message: "Empty!",
+                    });
+                } else {
+                    return res.json({
+                        result: "success",
+                        message: "Update base prompt success!",
                         data: results,
                     });
                 }
