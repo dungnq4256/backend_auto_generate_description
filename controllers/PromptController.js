@@ -111,6 +111,7 @@ const PromptController = {
                             promptList: results,
                             size: parseInt(size),
                             page: parseInt(page),
+                            totalElements: count,
                             totalPages: Math.ceil(count / size),
                         },
                     });
