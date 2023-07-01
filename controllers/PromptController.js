@@ -37,11 +37,9 @@ const PromptController = {
     },
     editBasePrompt: async (req, res) => {
         try {
-            const { promptDesc, promptSEO } = req.body;
+            const { promptSEO } = req.body;
             const sql =
-                "UPDATE base_prompts SET promptDesc = " +
-                mysql.escape(promptDesc) +
-                ", promptSEO = " +
+                "UPDATE base_prompts SET promptSEO = " +
                 mysql.escape(promptSEO) +
                 " WHERE (id = 1)";
             await db.query(sql, (error, results) => {
