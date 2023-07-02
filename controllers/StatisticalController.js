@@ -8,7 +8,7 @@ const StatisticalController = {
         try {
             const { fromDate, toDate } = req.query;
             const sql =
-                "SELECT DATE(createdAt) AS date, SUM(prompt_tokens) AS totalPromptTokens, SUM(completion_tokens) AS totalCompletionTokens COUNT(*) AS queryQuantity FROM statistics WHERE createdAt BETWEEN " +
+                "SELECT DATE(createdAt) AS date, SUM(prompt_tokens) AS totalPromptTokens, SUM(completion_tokens) AS totalCompletionTokens, COUNT(*) AS queryQuantity FROM statistics WHERE createdAt BETWEEN " +
                 mysql.escape(fromDate) +
                 " AND " +
                 mysql.escape(toDate) +
