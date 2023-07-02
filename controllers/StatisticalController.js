@@ -6,7 +6,13 @@ const db = connectDB.createConnection();
 const StatisticalController = {
     getStatistical: async (req, res) => {
         try {
-            const sql = "SELECT * FROM statistics";
+            const { fromDate, toDate } = req.query;
+            const sql =
+                "SELECT DATE(createdAt) AS date, SUM(prompt_tokens) AS totalPromptTokens, SUM(completion_tokens) AS totalCompletionTokens FROM statistics WHERE createdAt BETWEEN " +
+                mysql.escape(fromDate) +
+                " AND " +
+                mysql.escape(toDate) +
+                "GROUP BY DATE(createdAt)";
             await db.query(sql, (error, results) => {
                 if (error) {
                     console.log(error);
@@ -22,7 +28,7 @@ const StatisticalController = {
                 } else {
                     return res.json({
                         result: "success",
-                        message: "Get all statistics success!",
+                        message: "Get statistics success!",
                         data: results,
                     });
                 }
